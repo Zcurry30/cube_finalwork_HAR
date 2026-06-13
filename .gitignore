@@ -1,0 +1,43 @@
+# Build outputs
+MDK-ARM/finalwork/
+MDK-ARM/Listings/
+MDK-ARM/Objects/
+MDK-ARM/RTE/
+MDK-ARM/*.uvoptx
+MDK-ARM/*.uvguix.*
+MDK-ARM/*.dep
+MDK-ARM/*.bak
+*.axf
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.o
+*.d
+*.crf
+*.htm
+*.lnp
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Data and generated models
+data/raw/
+data/processed/
+data/interim/
+models/
+*.keras
+*.h5
+*.tflite
+*.onnx
+
+# Editor and OS files
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
