@@ -46,7 +46,7 @@ const char *HAR_ClassName(uint32_t class_index);
  * Board integration hooks.
  *
  * Implement these functions in a board-specific file after CubeMX generates
- * USART, SD/FATFS, USB CDC, LwIP, and display drivers. Each read hook must
+ * USART, SD/FATFS, USB CDC, and LwIP drivers. Each read hook must
  * return 1 when it copied one complete ASCII line into buffer, otherwise 0.
  * Supported data line format:
  *   ax,ay,az,gx,gy,gz
@@ -57,7 +57,6 @@ int HAR_SD_ReadLine(char *buffer, size_t buffer_size);
 int HAR_USB_ReadLine(char *buffer, size_t buffer_size);
 int HAR_ETH_ReadLine(char *buffer, size_t buffer_size);
 void HAR_OutputSerial(const char *text);
-void HAR_OutputDisplay(const HAR_Result *result);
 
 /*
  * Cube AI bridge.

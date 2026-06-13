@@ -233,7 +233,6 @@ static void HAR_RunInference(HAR_InputSource source)
 
   HAR_FormatResult(&result, message, sizeof(message));
   HAR_OutputSerial(message);
-  HAR_OutputDisplay(&result);
 }
 
 static uint32_t HAR_ArgMax(const float *values, size_t count)
@@ -292,11 +291,6 @@ HAR_WEAK int HAR_ETH_ReadLine(char *buffer, size_t buffer_size)
 HAR_WEAK void HAR_OutputSerial(const char *text)
 {
   (void)text;
-}
-
-HAR_WEAK void HAR_OutputDisplay(const HAR_Result *result)
-{
-  (void)result;
 }
 
 HAR_WEAK int HAR_RunNetwork(const float *input,

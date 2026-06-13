@@ -5,17 +5,17 @@ Recognition (HAR) system:
 
 - Input: UART, SD card, USB, Ethernet
 - Inference: X-CUBE-AI entry point through `MX_X_CUBE_AI_Process()`
-- Output: serial text and optional touch-screen display hook
+- Output: serial text
 
 ## Current project status
 
 The current CubeMX/MDK project targets `STM32F767IGTx` and uses `stm32f7xx`
 HAL files. This matches the confirmed STM32F767IGT6 target.
 
-The generated `.ioc` currently enables only GPIO and X-CUBE-AI. UART, SD,
-USB, Ethernet, FATFS, LwIP, and display drivers still need to be enabled in
-CubeMX for real hardware I/O. No development board is connected yet, so the
-current project is prepared as a software-side integration skeleton.
+The `.ioc` is prepared for UART, SDMMC/FATFS, USB CDC, Ethernet/LwIP, GPIO,
+and X-CUBE-AI. No development board is connected yet, so the project remains a
+software-side integration skeleton until CubeMX code generation and board-level
+I/O hooks are completed.
 
 ## Training workflow
 
@@ -53,16 +53,23 @@ different input shape.
 
 ## CubeMX configuration checklist
 
-Enable the required hardware in CubeMX and regenerate code:
+The `.ioc` uses this no-touch-screen pinout:
+
+1. USART3: PD8 TX, PD9 RX.
+2. SDMMC1 4-bit: PC8 D0, PC9 D1, PC10 D2, PC11 D3, PC12 CK, PD2 CMD.
+3. USB OTG FS CDC device: PA9 VBUS, PA11 DM, PA12 DP.
+4. Ethernet RMII: PA1 REF_CLK, PA2 MDIO, PA7 CRS_DV, PC1 MDC, PC4 RXD0,
+   PC5 RXD1, PB11 TX_EN, PB12 TXD0, PB13 TXD1.
+5. SWD debug: PA13 SWDIO, PA14 SWCLK.
+
+Enable or verify the required hardware in CubeMX and regenerate code:
 
 1. USART/UART for command/data input and serial result output.
 2. SDMMC + FATFS for reading CSV files from SD card.
 3. USB Device CDC or USB Host, depending on whether the board receives data as
    a virtual COM device or from a USB storage/device source.
 4. Ethernet + LwIP for UDP/TCP sample input.
-5. LTDC/DSI/FMC/TouchGFX or the board display stack if touch-screen output is
-   required.
-6. X-CUBE-AI with the trained HAR model imported and code generated.
+5. X-CUBE-AI with the trained HAR model imported and code generated.
 
 After regeneration, keep the user-code sections and re-add `Src/har_app.c` to
 the MDK project if CubeMX removes manually added files.
@@ -100,7 +107,6 @@ Required read hooks:
 Required output hooks:
 
 - `HAR_OutputSerial`
-- `HAR_OutputDisplay`
 
 The application polls all input hooks from `HAR_Process()`. Keep hooks
 non-blocking so the main loop remains responsive.
