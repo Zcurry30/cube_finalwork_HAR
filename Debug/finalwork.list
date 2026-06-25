@@ -16361,11 +16361,11 @@ static void HAR_RunInference(HAR_InputSource source)
  8006742:	f44f 7140 	mov.w	r1, #768	@ 0x300
  8006746:	4843      	ldr	r0, [pc, #268]	@ (8006854 <HAR_RunInference+0x130>)
  8006748:	f7ff ffa8 	bl	800669c <HAR_CopyWindow>
-    /* UCI HAR normalization — computed from training data (this session)     */
-    static const float mean[6] = {0.8066f, 0.0215f, 0.0860f,
-                                  -0.0032f, -0.0002f, 0.0011f};
-    static const float std[6]  = {0.4118f, 0.3968f, 0.3442f,
-                                   0.4039f, 0.3716f, 0.2540f};
+    /* UCI HAR normalization — train-only data (this session)                 */
+    static const float mean[6] = {0.8037f, 0.0301f, 0.0871f,
+                                   0.0017f, -0.0013f, 0.0004f};
+    static const float std[6]  = {0.4133f, 0.3908f, 0.3573f,
+                                   0.4048f, 0.3814f, 0.2551f};
     for (uint32_t s = 0U; s < HAR_WINDOW_SAMPLES; s++) {
  800674c:	2300      	movs	r3, #0
  800674e:	f8c7 30fc 	str.w	r3, [r7, #252]	@ 0xfc
