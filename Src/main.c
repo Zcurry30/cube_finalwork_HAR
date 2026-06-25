@@ -72,7 +72,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  /* Emergency UART — same as scan test, before ANY init, HSI=16MHz       */
+  /* EARLY RX TEST: init USART1 + echo in tight loop, before ANY HAL      */
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
   RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
   GPIOA->MODER &= ~(GPIO_MODER_MODER9 | GPIO_MODER_MODER10);
@@ -80,10 +80,17 @@ int main(void)
   GPIOA->AFR[1] &= ~(0xFF << 4);
   GPIOA->AFR[1] |= (7 << 4) | (7 << 8);
   USART1->BRR = 16000000U / 115200U;
-  USART1->CR1 = USART_CR1_TE | USART_CR1_UE;
-  const char *p = "BOOT: START\r\n";
+  USART1->CR1 = USART_CR1_TE | USART_CR1_RE | USART_CR1_UE;
+  const char *p = "EARLY ECHO\r\n";
   while (*p) { while (!(USART1->ISR & USART_ISR_TXE)); USART1->TDR = *p++; }
-  volatile uint32_t d; for (d=0; d<2000000; d++) { __NOP(); }
+  /* Echo loop: run for a while, echo any RX byte back                   */
+  for (volatile uint32_t t=0; t<10000000; t++) {
+      if (USART1->ISR & USART_ISR_RXNE) {
+          char c = USART1->RDR;
+          while (!(USART1->ISR & USART_ISR_TXE));
+          USART1->TDR = c;
+      }
+  }
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
@@ -123,6 +130,22 @@ int main(void)
   { const char *m="USB SKIP\r\n"; while(*m){while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=*m++;} }
   MX_X_CUBE_AI_Init();
   { const char *m="AI OK\r\n"; while(*m){while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=*m++;} }
+  /* Dump USART1 registers for debug */
+  { uint32_t v; char h[]="0123456789ABCDEF";
+    #define P(m,n) v=*(volatile uint32_t*)(m); while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=n;
+    #define X while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=h[(v>>28)&0xF]; while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=h[(v>>24)&0xF]; while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=h[(v>>20)&0xF]; while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=h[(v>>16)&0xF]; while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=h[(v>>12)&0xF]; while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=h[(v>>8)&0xF]; while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=h[(v>>4)&0xF]; while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=h[v&0xF]; while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR='\r'; while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR='\n';
+    P(0x40011000,'C');P(0x40011000,'R');P(0x40011000,'1');P(0x40011000,'=');X;
+    P(0x40011004,'C');P(0x40011004,'R');P(0x40011004,'2');P(0x40011004,'=');X;
+    P(0x40011008,'C');P(0x40011008,'R');P(0x40011008,'3');P(0x40011008,'=');X;
+    P(0x4001100C,'B');P(0x4001100C,'R');P(0x4001100C,'R');P(0x4001100C,'=');X;
+    P(0x4001101C,'I');P(0x4001101C,'S');P(0x4001101C,'R');P(0x4001101C,'=');X;
+    P(0x40020000,'M');P(0x40020000,'O');P(0x40020000,'D');P(0x40020000,'=');X;
+    P(0x4002000C,'P');P(0x4002000C,'U');P(0x4002000C,'P');P(0x4002000C,'=');X;
+    P(0x40020024,'A');P(0x40020024,'F');P(0x40020024,'H');P(0x40020024,'=');X;
+    P(0x40023844,'A');P(0x40023844,'P');P(0x40023844,'2');P(0x40023844,'=');X;
+    #undef P
+    #undef X
+  }
   /* USER CODE BEGIN 2 */
   HAR_Init();
   /* USER CODE END 2 */

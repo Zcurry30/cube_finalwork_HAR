@@ -1,4 +1,6 @@
-../Src/har_io_uart.c:27:5:HAR_UART_ReadLine	24	static,ignoring_inline_asm
-../Src/har_io_uart.c:59:6:HAR_OutputSerial	16	static
-../Src/har_io_uart.c:72:6:USART1_IRQHandler	16	static
-../Src/har_io_uart.c:89:6:HAR_IO_UART_Init	8	static
+../Drivers/CMSIS/Include/core_cm7.h:1896:22:__NVIC_EnableIRQ	16	static
+../Drivers/CMSIS/Include/core_cm7.h:2024:22:__NVIC_SetPriority	16	static
+../Src/har_io_uart.c:23:5:HAR_UART_ReadLine	24	static,ignoring_inline_asm
+../Src/har_io_uart.c:49:6:HAR_OutputSerial	16	static
+../Src/har_io_uart.c:61:6:USART1_IRQHandler	16	static
+../Src/har_io_uart.c:81:6:HAR_IO_UART_Init	8	static
