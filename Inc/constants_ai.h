@@ -1,30 +1,29 @@
 /**
   ******************************************************************************
-  * @file    constants.h
+  * @file    constants_ai.h
   * @author  X-CUBE-AI C code generator
-  * @brief   AI constants definitions
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2026 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
+  * @brief   AI constants definitions for network_3
   ******************************************************************************
   */
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __CONSTANTS_H
-#define __CONSTANTS_H
+
+#ifndef __CONSTANTS_AI_H
+#define __CONSTANTS_AI_H
+
 #ifdef __cplusplus
  extern "C" {
 #endif
-/* Constants definitions ------------------------------------------------------------------*/
+
+/* Network_3 model: har_model.tflite (float32, 1016 params)                   */
+/* Input:  128 x 6 (H x CH), 3.00 KB, f32                                    */
+/* Output: 7 classes, 28 B, f32 + softmax                                     */
+/* MACC:   76,017                                                              */
+/* Weights (ro): 4,064 B   |  Activations (rw): 7,288 B                       */
+/* RAM total:    7,288 B                                                       */
+
+#define AI_NETWORK_3_DATA_ACTIVATIONS_SIZE  7296
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /*__constants_ai_h_H */
+#endif /* __CONSTANTS_AI_H */

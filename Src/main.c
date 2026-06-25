@@ -18,12 +18,17 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "eth.h"
+#include "sdmmc.h"
+#include "usart.h"
+#include "usb_device.h"
 #include "gpio.h"
 #include "app_x-cube-ai.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "har_app.h"
+#include "har_io_uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -67,16 +72,29 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  /* Emergency UART — same as scan test, before ANY init, HSI=16MHz       */
+  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+  RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
+  GPIOA->MODER &= ~(GPIO_MODER_MODER9 | GPIO_MODER_MODER10);
+  GPIOA->MODER |= GPIO_MODER_MODER9_1 | GPIO_MODER_MODER10_1;
+  GPIOA->AFR[1] &= ~(0xFF << 4);
+  GPIOA->AFR[1] |= (7 << 4) | (7 << 8);
+  USART1->BRR = 16000000U / 115200U;
+  USART1->CR1 = USART_CR1_TE | USART_CR1_UE;
+  const char *p = "BOOT: START\r\n";
+  while (*p) { while (!(USART1->ISR & USART_ISR_TXE)); USART1->TDR = *p++; }
+  volatile uint32_t d; for (d=0; d<2000000; d++) { __NOP(); }
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
   MPU_Config();
+  { const char *m="MPU OK\r\n"; while(*m){while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=*m++;} }
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
+  { const char *m="HAL OK\r\n"; while(*m){while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=*m++;} }
 
   /* USER CODE BEGIN Init */
 
@@ -84,6 +102,7 @@ int main(void)
 
   /* Configure the system clock */
   SystemClock_Config();
+  { const char *m="CLK OK\r\n"; while(*m){while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=*m++;} }
 
   /* USER CODE BEGIN SysInit */
 
@@ -91,13 +110,50 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  /* Init USART1 RIGHT AFTER GPIO — MX_GPIO_Init set PA9 to USB_VBUS,
+     we need it back as USART1_TX (CH340G is on PA9/PA10) */
+  HAR_IO_UART_Init();
+  HAR_OutputSerial("BOOT: UART OK\r\n");
+  MX_USART3_UART_Init();
+  MX_ETH_Init();
+  { const char *m="ETH OK\r\n"; while(*m){while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=*m++;} }
+  /* MX_SDMMC1_SD_Init() SKIPPED — no SD card, hangs without one */
+  { const char *m="SD SKIP\r\n"; while(*m){while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=*m++;} }
+  /* MX_USB_DEVICE_Init() SKIPPED — PA9 used for UART, USB VBUS unavailable */
+  { const char *m="USB SKIP\r\n"; while(*m){while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=*m++;} }
   MX_X_CUBE_AI_Init();
+  { const char *m="AI OK\r\n"; while(*m){while(!(USART1->ISR&USART_ISR_TXE));USART1->TDR=*m++;} }
   /* USER CODE BEGIN 2 */
-
+  HAR_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  /* Echo: any byte on USART1(PA10) or USART2(PA3) or USART3(PD9)         */
+  static int rx_init_done = 0;
+  if (!rx_init_done) {
+      rx_init_done = 1;
+      RCC->APB1ENR |= RCC_APB1ENR_USART2EN | RCC_APB1ENR_USART3EN;
+      /* PA3 = USART2_RX (AF7) */
+      GPIOA->MODER &= ~GPIO_MODER_MODER3;
+      GPIOA->MODER |= GPIO_MODER_MODER3_1;
+      GPIOA->PUPDR |= GPIO_PUPDR_PUPDR3_0;   /* pull-up */
+      GPIOA->AFR[0] &= ~(0xF << 12);
+      GPIOA->AFR[0] |= (7 << 12);
+      USART2->BRR = 16000000U / 115200U;
+      USART2->CR1 = USART_CR1_RE | USART_CR1_UE;
+      /* PD9 = USART3_RX (AF7) */
+      GPIOD->MODER &= ~GPIO_MODER_MODER9;
+      GPIOD->MODER |= GPIO_MODER_MODER9_1;
+      GPIOD->PUPDR |= GPIO_PUPDR_PUPDR9_0;   /* pull-up */
+      GPIOD->AFR[1] &= ~(0xF << 4);
+      GPIOD->AFR[1] |= (7 << 4);
+      USART3->BRR = 16000000U / 115200U;
+      USART3->CR1 |= USART_CR1_RE;
+  }
+  if (USART1->ISR & USART_ISR_RXNE) { char c=USART1->RDR; while(!(USART1->ISR & USART_ISR_TXE)); USART1->TDR=c; }
+  if (USART2->ISR & USART_ISR_RXNE) { char c=USART2->RDR; while(!(USART1->ISR & USART_ISR_TXE)); USART1->TDR=c; }
+  if (USART3->ISR & USART_ISR_RXNE) { char c=USART3->RDR; while(!(USART1->ISR & USART_ISR_TXE)); USART1->TDR=c; }
   while (1)
   {
     /* USER CODE END WHILE */
@@ -114,51 +170,11 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-  /** Configure the main internal regulator output voltage
-  */
-  __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 4;
-  RCC_OscInitStruct.PLL.PLLN = 216;
-  RCC_OscInitStruct.PLL.PLLP = 2;
-  RCC_OscInitStruct.PLL.PLLQ = 9;
-  RCC_OscInitStruct.PLL.PLLR = 2;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Activate the Over-Drive mode
-  */
-  if (HAL_PWREx_EnableOverDrive() != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_7) != HAL_OK)
-  {
-    Error_Handler();
-  }
+  /* SKIP PLL — use HSI 16MHz directly (PLL config was crashing)            */
+  /* After reset: HSI=16MHz, SYSCLK=16MHz, HCLK=16MHz,                     */
+  /*               APB1=16MHz, APB2=16MHz, FLASH_LATENCY=0                  */
+  /* This is plenty for HAR inference and avoids all clock issues.          */
+  HAL_SYSTICK_Config(16000000U / 1000U);  /* 1ms SysTick @ 16MHz            */
 }
 
 /* USER CODE BEGIN 4 */

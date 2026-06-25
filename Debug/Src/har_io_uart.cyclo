@@ -1,0 +1,4 @@
+../Src/har_io_uart.c:27:5:HAR_UART_ReadLine	7
+../Src/har_io_uart.c:59:6:HAR_OutputSerial	3
+../Src/har_io_uart.c:72:6:USART1_IRQHandler	3
+../Src/har_io_uart.c:89:6:HAR_IO_UART_Init	1

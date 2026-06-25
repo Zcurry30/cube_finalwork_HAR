@@ -1,0 +1,3 @@
+../Src/app_x-cube-ai.c:34:6:MX_X_CUBE_AI_Init	24	static
+../Src/app_x-cube-ai.c:47:6:MX_X_CUBE_AI_Process	8	static
+../Src/app_x-cube-ai.c:58:5:HAR_RunNetwork	40	static

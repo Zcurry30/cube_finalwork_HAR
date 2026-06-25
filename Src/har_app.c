@@ -5,9 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if defined(__GNUC__)
+#if defined(__GNUC__) || defined(__clang__) || defined(__armclang__)
 #define HAR_WEAK __attribute__((weak))
-#elif defined(__ICCARM__) || defined(__CC_ARM) || defined(__ARMCC_VERSION)
+#elif defined(__ICCARM__) || defined(__CC_ARM)
 #define HAR_WEAK __weak
 #else
 #define HAR_WEAK
