@@ -276,14 +276,13 @@ static uint32_t HAR_ArgMax(const float *values, size_t count)
 
 static void HAR_FormatResult(const HAR_Result *result, char *buffer, size_t buffer_size)
 {
-  /* Print ALL 7 class scores as integer percentages — nano.specs no %f   */
+  /* Print ALL 6 class scores as integer percentages — nano.specs no %f   */
   int s0 = (int)(result->scores[0] * 100.0f);
   int s1 = (int)(result->scores[1] * 100.0f);
   int s2 = (int)(result->scores[2] * 100.0f);
   int s3 = (int)(result->scores[3] * 100.0f);
   int s4 = (int)(result->scores[4] * 100.0f);
   int s5 = (int)(result->scores[5] * 100.0f);
-  int s6 = (int)(result->scores[6] * 100.0f);
   (void)snprintf(buffer, buffer_size,
       "HAR,label=%s,La=%d%%,Si=%d%%,St=%d%%,Wa=%d%%,WD=%d%%,WU=%d%%\r\n",
       result->label,
