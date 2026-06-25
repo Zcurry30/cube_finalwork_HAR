@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    network_3.c
   * @author  AST Embedded Analytics Research Platform
-  * @date    2026-06-26T02:37:09+0800
+  * @date    2026-06-26T03:30:20+0800
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
@@ -35,14 +35,14 @@
 #define AI_NET_OBJ_INSTANCE g_network_3
  
 #undef AI_NETWORK_3_MODEL_SIGNATURE
-#define AI_NETWORK_3_MODEL_SIGNATURE     "0x16366a3a2af46db6bd8c6bc290f29dc1"
+#define AI_NETWORK_3_MODEL_SIGNATURE     "0xa194830bda226bb92227ada8bfde7f4f"
 
 #ifndef AI_TOOLS_REVISION_ID
 #define AI_TOOLS_REVISION_ID     ""
 #endif
 
 #undef AI_TOOLS_DATE_TIME
-#define AI_TOOLS_DATE_TIME   "2026-06-26T02:37:09+0800"
+#define AI_TOOLS_DATE_TIME   "2026-06-26T03:30:20+0800"
 
 #undef AI_TOOLS_COMPILE_TIME
 #define AI_TOOLS_COMPILE_TIME    __DATE__ " " __TIME__
@@ -677,7 +677,7 @@ AI_NETWORK_OBJ_DECLARE(
     25216, NULL, NULL),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_3_IN_NUM, &serving_default_sensor_window0_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_3_OUT_NUM, &nl_21_output),
-  &conv2d_1_layer, 0x38666568, NULL)
+  &conv2d_1_layer, 0x97108df1, NULL)
 
 #else
 
@@ -697,7 +697,7 @@ AI_NETWORK_OBJ_DECLARE(
   ),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_3_IN_NUM, &serving_default_sensor_window0_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_3_OUT_NUM, &nl_21_output),
-  &conv2d_1_layer, 0x38666568, NULL)
+  &conv2d_1_layer, 0x97108df1, NULL)
 
 #endif	/*(AI_TOOLS_API_VERSION < AI_TOOLS_API_VERSION_1_5)*/
 
@@ -848,7 +848,7 @@ ai_bool ai_network_3_get_info(
       .params            = AI_STRUCT_INIT,
       .activations       = AI_STRUCT_INIT,
       .n_nodes           = 0,
-      .signature         = 0x38666568,
+      .signature         = 0x97108df1,
     };
 
     if (!ai_platform_api_get_network_report(network, &r)) return false;
@@ -896,7 +896,7 @@ ai_bool ai_network_3_get_report(
       .map_weights       = AI_STRUCT_INIT,
       .map_activations   = AI_STRUCT_INIT,
       .n_nodes           = 0,
-      .signature         = 0x38666568,
+      .signature         = 0x97108df1,
     };
 
     if (!ai_platform_api_get_network_report(network, &r)) return false;

@@ -1,5 +1,5 @@
 ST Edge AI Core v2.2.0-20266 2adc00962
-Created date          : 2026-06-26 02:37:10
+Created date          : 2026-06-26 03:30:20
 Parameters            : generate --target stm32f7 --name network_3 -m E:/Desktop/HAR/har_fresh/models/har/har_model.tflite --compression none --output E:/Desktop/HAR/har_fresh/.ai/network_output
 
 Exec/report summary (generate)
@@ -15,7 +15,7 @@ workspace dir      :   E:\Desktop\HAR\har_fresh\st_ai_ws
 output dir         :   E:\Desktop\HAR\har_fresh\.ai\network_output                                
 model_fmt          :   float                                                                      
 model_name         :   har_model                                                                  
-model_hash         :   0x16366a3a2af46db6bd8c6bc290f29dc1                                         
+model_hash         :   0xa194830bda226bb92227ada8bfde7f4f                                         
 params #           :   30,598 items (35.52 KiB)                                                   
 --------------------------------------------------------------------------------------------------
 input 1/1          :   'serving_default_sensor_window0', f32(1x128x6), 3.00 KBytes, activations   

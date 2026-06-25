@@ -230,11 +230,11 @@ static void HAR_RunInference(HAR_InputSource source)
   /* Mean/std estimated for typical smartphone IMU (accel-g, gyro-rad/s).   */
   /* Replace with values from normalization.json when available.            */
   {
-    /* UCI HAR normalization — computed from training data (this session)     */
-    static const float mean[6] = {0.8066f, 0.0215f, 0.0860f,
-                                  -0.0032f, -0.0002f, 0.0011f};
-    static const float std[6]  = {0.4118f, 0.3968f, 0.3442f,
-                                   0.4039f, 0.3716f, 0.2540f};
+    /* UCI HAR normalization — train-only data (this session)                 */
+    static const float mean[6] = {0.8037f, 0.0301f, 0.0871f,
+                                   0.0017f, -0.0013f, 0.0004f};
+    static const float std[6]  = {0.4133f, 0.3908f, 0.3573f,
+                                   0.4048f, 0.3814f, 0.2551f};
     for (uint32_t s = 0U; s < HAR_WINDOW_SAMPLES; s++) {
       for (uint32_t a = 0U; a < HAR_AXIS_COUNT; a++) {
         uint32_t idx = s * HAR_AXIS_COUNT + a;
