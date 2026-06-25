@@ -21,6 +21,30 @@ STM32Cube.AI / X-CUBE-AI.
 - The project has no connected development board yet, so hardware hooks are
   still weak stubs.
 
+## UART Debug
+
+The current board serial stream uses the onboard CH340G USB-UART bridge on
+USART1:
+
+- PA9: USART1_TX
+- PA10: USART1_RX
+- 115200 baud, 8 data bits, no parity, 1 stop bit
+
+Send one CSV sample line from the serial assistant:
+
+```text
+0.01,0.02,0.98,0.1,0.0,0.2
+```
+
+The firmware immediately echoes a completed line:
+
+```text
+RX,0.01,0.02,0.98,0.1,0.0,0.2
+```
+
+If the line cannot be parsed, it returns an `ERR,...` message. A classification
+result appears after the HAR window receives 128 valid samples.
+
 ## Data Format
 
 Training CSV:

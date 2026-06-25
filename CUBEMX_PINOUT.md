@@ -7,7 +7,8 @@ UART.
 
 | Interface | Function | Pins |
 | --- | --- | --- |
-| USART3 | UART input/output | PD8 TX, PD9 RX |
+| USART1 | Board USB-UART input/output | PA9 TX, PA10 RX |
+| USART3 | Optional UART input/output | PD8 TX, PD9 RX |
 | SDMMC1 | SD card 4-bit bus | PC8 D0, PC9 D1, PC10 D2, PC11 D3, PC12 CK, PD2 CMD |
 | USB OTG FS | USB CDC device | PA9 VBUS, PA11 DM, PA12 DP |
 | ETH | RMII Ethernet | PA1 REF_CLK, PA2 MDIO, PA7 CRS_DV, PC1 MDC, PC4 RXD0, PC5 RXD1, PB11 TX_EN, PB12 TXD0, PB13 TXD1 |
@@ -35,5 +36,7 @@ schematic before manufacturing or wiring a custom board:
 - SD card lines need pull-ups according to the SD card socket design.
 - USB FS needs the correct connector, ESD protection, VBUS sensing, and power
   design.
-- USART3 can be connected to a USB-to-UART adapter or ST-Link VCP if the board
-  routes PD8/PD9 that way.
+- The current serial debug/HAR stream uses USART1 PA9/PA10 because the Apollo
+  STM32F767 board routes its CH340G USB-UART bridge there.
+- USART3 remains an optional CubeMX UART pinout for boards that route PD8/PD9
+  to an external adapter.

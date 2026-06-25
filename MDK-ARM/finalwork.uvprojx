@@ -805,6 +805,11 @@
               </FileOption>
             </File>
             <File>
+              <FileName>har_io_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/har_io_uart.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f7xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32f7xx_it.c</FilePath>

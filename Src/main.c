@@ -129,31 +129,6 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  /* Echo: any byte on USART1(PA10) or USART2(PA3) or USART3(PD9)         */
-  static int rx_init_done = 0;
-  if (!rx_init_done) {
-      rx_init_done = 1;
-      RCC->APB1ENR |= RCC_APB1ENR_USART2EN | RCC_APB1ENR_USART3EN;
-      /* PA3 = USART2_RX (AF7) */
-      GPIOA->MODER &= ~GPIO_MODER_MODER3;
-      GPIOA->MODER |= GPIO_MODER_MODER3_1;
-      GPIOA->PUPDR |= GPIO_PUPDR_PUPDR3_0;   /* pull-up */
-      GPIOA->AFR[0] &= ~(0xF << 12);
-      GPIOA->AFR[0] |= (7 << 12);
-      USART2->BRR = 16000000U / 115200U;
-      USART2->CR1 = USART_CR1_RE | USART_CR1_UE;
-      /* PD9 = USART3_RX (AF7) */
-      GPIOD->MODER &= ~GPIO_MODER_MODER9;
-      GPIOD->MODER |= GPIO_MODER_MODER9_1;
-      GPIOD->PUPDR |= GPIO_PUPDR_PUPDR9_0;   /* pull-up */
-      GPIOD->AFR[1] &= ~(0xF << 4);
-      GPIOD->AFR[1] |= (7 << 4);
-      USART3->BRR = 16000000U / 115200U;
-      USART3->CR1 |= USART_CR1_RE;
-  }
-  if (USART1->ISR & USART_ISR_RXNE) { char c=USART1->RDR; while(!(USART1->ISR & USART_ISR_TXE)); USART1->TDR=c; }
-  if (USART2->ISR & USART_ISR_RXNE) { char c=USART2->RDR; while(!(USART1->ISR & USART_ISR_TXE)); USART1->TDR=c; }
-  if (USART3->ISR & USART_ISR_RXNE) { char c=USART3->RDR; while(!(USART1->ISR & USART_ISR_TXE)); USART1->TDR=c; }
   while (1)
   {
     /* USER CODE END WHILE */

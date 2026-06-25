@@ -44,6 +44,7 @@ static void HAR_CopyWindow(float *destination, size_t destination_count);
 static void HAR_RunInference(HAR_InputSource source);
 static uint32_t HAR_ArgMax(const float *values, size_t count);
 static void HAR_FormatResult(const HAR_Result *result, char *buffer, size_t buffer_size);
+static void HAR_FormatParseError(HAR_InputSource source, const char *line);
 
 void HAR_Init(void)
 {
@@ -83,9 +84,16 @@ void HAR_Process(void)
         break;
     }
 
-    if ((has_line != 0) && (HAR_ParseSampleLine(line, &sample) != 0))
+    if (has_line != 0)
     {
-      HAR_AddSample(&sample, (HAR_InputSource)source);
+      if (HAR_ParseSampleLine(line, &sample) != 0)
+      {
+        HAR_AddSample(&sample, (HAR_InputSource)source);
+      }
+      else
+      {
+        HAR_FormatParseError((HAR_InputSource)source, line);
+      }
     }
   }
 }
@@ -258,6 +266,18 @@ static void HAR_FormatResult(const HAR_Result *result, char *buffer, size_t buff
                  HAR_SourceName(result->source),
                  result->label,
                  result->confidence);
+}
+
+static void HAR_FormatParseError(HAR_InputSource source, const char *line)
+{
+  char message[192];
+
+  (void)snprintf(message,
+                 sizeof(message),
+                 "ERR,source=%s,expected=ax,ay,az,gx,gy,gz,line=%s\r\n",
+                 HAR_SourceName(source),
+                 line);
+  HAR_OutputSerial(message);
 }
 
 HAR_WEAK int HAR_UART_ReadLine(char *buffer, size_t buffer_size)

@@ -154,8 +154,13 @@ version.
 Serial output format:
 
 ```text
+RX,0.01,0.02,0.98,0.1,0.0,0.2
 HAR,source=UART,label=walking,confidence=0.680
 ```
+
+The `RX,...` line is an immediate debug echo from USART1 PA9/PA10. The
+`HAR,...` line is emitted only after `HAR_WINDOW_SAMPLES` valid samples have
+been collected.
 
 Class labels are defined in `Src/har_app.c`:
 
