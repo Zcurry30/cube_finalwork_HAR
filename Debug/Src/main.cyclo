@@ -1,4 +1,4 @@
-../Src/main.c:71:5:main	144
-../Src/main.c:162:6:SystemClock_Config	1
-../Src/main.c:177:6:MPU_Config	1
-../Src/main.c:208:6:Error_Handler	1
+../Src/main.c:71:5:main	146
+../Src/main.c:169:6:SystemClock_Config	1
+../Src/main.c:184:6:MPU_Config	1
+../Src/main.c:215:6:Error_Handler	1

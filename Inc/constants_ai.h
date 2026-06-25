@@ -20,7 +20,7 @@
 /* Weights (ro): 4,064 B   |  Activations (rw): 7,288 B                       */
 /* RAM total:    7,288 B                                                       */
 
-#define AI_NETWORK_3_DATA_ACTIVATIONS_SIZE  7296
+#define AI_NETWORK_3_DATA_ACTIVATIONS_SIZE  25216
 
 #ifdef __cplusplus
 }

@@ -61,8 +61,8 @@ all: main-build
 main-build: finalwork.elf secondary-outputs
 
 # Tool invocations
-finalwork.elf finalwork.map: $(OBJS) $(USER_OBJS) E:\Desktop\HAR\har_project\STM32F767IGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "finalwork.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"E:\Desktop\HAR\har_project\STM32F767IGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="finalwork.map" -Wl,--gc-sections -static -L"E:\Desktop\HAR\har_project\Middlewares\ST\AI\Lib" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+finalwork.elf finalwork.map: $(OBJS) $(USER_OBJS) E:\Desktop\HAR\har_fresh\STM32F767IGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "finalwork.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"E:\Desktop\HAR\har_fresh\STM32F767IGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="finalwork.map" -Wl,--gc-sections -static -L"E:\Desktop\HAR\har_fresh\Middlewares\ST\AI\Lib" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

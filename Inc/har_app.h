@@ -12,7 +12,7 @@ extern "C" {
 #define HAR_AXIS_COUNT              6U
 #define HAR_WINDOW_SAMPLES          128U
 #define HAR_WINDOW_STRIDE           64U
-#define HAR_CLASS_COUNT             7U
+#define HAR_CLASS_COUNT             6U
 #define HAR_LINE_MAX_LEN            160U
 
 typedef enum

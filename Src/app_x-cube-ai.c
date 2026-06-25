@@ -26,7 +26,7 @@
 /* Private variables ---------------------------------------------------------*/
 static ai_handle network_3 = AI_HANDLE_NULL;
 
-#define AI_NETWORK_3_ACTIVATIONS_SIZE  7296
+#define AI_NETWORK_3_ACTIVATIONS_SIZE  25216
 static ai_u8 activations[AI_NETWORK_3_ACTIVATIONS_SIZE];
 
 /* Entry points --------------------------------------------------------------*/

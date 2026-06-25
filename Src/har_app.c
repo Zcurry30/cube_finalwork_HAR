@@ -29,13 +29,12 @@ static const char *const har_source_names[HAR_INPUT_COUNT] =
 
 static const char *const har_class_names[HAR_CLASS_COUNT] =
 {
-  "walking",
-  "running",
+  "laying",
   "sitting",
   "standing",
-  "upstairs",
-  "downstairs",
-  "unknown"
+  "walking",
+  "walking_down",
+  "walking_up"
 };
 
 static int HAR_ParseSampleLine(const char *line, HAR_Sample *sample);
@@ -231,11 +230,11 @@ static void HAR_RunInference(HAR_InputSource source)
   /* Mean/std estimated for typical smartphone IMU (accel-g, gyro-rad/s).   */
   /* Replace with values from normalization.json when available.            */
   {
-    /* UCI HAR dataset normalization — computed from training data            */
-    static const float mean[6] = {0.2736f, -0.0172f, -1.1146f,
-                                  -0.0249f, 0.0006f, -0.0103f};
-    static const float std[6]  = {0.1315f, 0.1354f, 0.1093f,
-                                   0.4739f, 0.5049f, 0.2638f};
+    /* UCI HAR normalization — computed from training data (this session)     */
+    static const float mean[6] = {0.8066f, 0.0215f, 0.0860f,
+                                  -0.0032f, -0.0002f, 0.0011f};
+    static const float std[6]  = {0.4118f, 0.3968f, 0.3442f,
+                                   0.4039f, 0.3716f, 0.2540f};
     for (uint32_t s = 0U; s < HAR_WINDOW_SAMPLES; s++) {
       for (uint32_t a = 0U; a < HAR_AXIS_COUNT; a++) {
         uint32_t idx = s * HAR_AXIS_COUNT + a;
@@ -286,9 +285,9 @@ static void HAR_FormatResult(const HAR_Result *result, char *buffer, size_t buff
   int s5 = (int)(result->scores[5] * 100.0f);
   int s6 = (int)(result->scores[6] * 100.0f);
   (void)snprintf(buffer, buffer_size,
-      "HAR,label=%s,W=%d%%,R=%d%%,Si=%d%%,St=%d%%,U=%d%%,D=%d%%,Unk=%d%%\r\n",
+      "HAR,label=%s,La=%d%%,Si=%d%%,St=%d%%,Wa=%d%%,WD=%d%%,WU=%d%%\r\n",
       result->label,
-      s0, s1, s2, s3, s4, s5, s6);
+      s0, s1, s2, s3, s4, s5);
 }
 
 static void HAR_FormatParseError(HAR_InputSource source, const char *line)
