@@ -48,7 +48,7 @@ static int HAR_UART_PopByte(uint8_t *byte)
   return has_data;
 }
 
-static int HAR_UART_FlushLine(char *buffer, uint16_t buffer_len)
+static int HAR_UART_FlushLine(char *buffer, size_t buffer_len)
 {
   if ((buffer == NULL) || (buffer_len == 0U) || (har_uart_line_len == 0U))
   {
@@ -57,7 +57,7 @@ static int HAR_UART_FlushLine(char *buffer, uint16_t buffer_len)
 
   if (har_uart_line_len >= buffer_len)
   {
-    har_uart_line_len = (uint16_t)(buffer_len - 1U);
+    har_uart_line_len = (buffer_len - 1U);
   }
 
   for (uint16_t i = 0U; i < har_uart_line_len; ++i)
@@ -102,7 +102,7 @@ void HAR_IO_UART_Init(void)
   HAL_NVIC_EnableIRQ(USART1_IRQn);
 }
 
-int HAR_UART_ReadLine(char *buffer, uint16_t buffer_len)
+int HAR_UART_ReadLine(char *buffer, size_t buffer_len)
 {
   uint8_t byte;
   int saw_byte = 0;

@@ -260,12 +260,15 @@ static uint32_t HAR_ArgMax(const float *values, size_t count)
 
 static void HAR_FormatResult(const HAR_Result *result, char *buffer, size_t buffer_size)
 {
+  /* Use %d.%03d instead of %.3f — nano.specs printf doesn't support %f */
+  int conf_int = (int)(result->confidence * 1000.0f);
   (void)snprintf(buffer,
                  buffer_size,
-                 "HAR,source=%s,label=%s,confidence=%.3f\r\n",
+                 "HAR,source=%s,label=%s,conf=%d.%03d\r\n",
                  HAR_SourceName(result->source),
                  result->label,
-                 result->confidence);
+                 conf_int / 1000,
+                 conf_int % 1000);
 }
 
 static void HAR_FormatParseError(HAR_InputSource source, const char *line)
