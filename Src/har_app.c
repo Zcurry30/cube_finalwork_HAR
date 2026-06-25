@@ -227,6 +227,20 @@ static void HAR_RunInference(HAR_InputSource source)
 
   HAR_CopyWindow(har_ai_input, sizeof(har_ai_input) / sizeof(har_ai_input[0]));
 
+  /* Per-axis normalization — same as training (normalization.json)         */
+  /* Mean/std estimated for typical smartphone IMU (accel-g, gyro-rad/s).   */
+  /* Replace with values from normalization.json when available.            */
+  {
+    static const float mean[6] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f};
+    static const float std[6]  = {0.2f, 0.2f, 0.15f, 0.5f, 0.5f, 0.5f};
+    for (uint32_t s = 0U; s < HAR_WINDOW_SAMPLES; s++) {
+      for (uint32_t a = 0U; a < HAR_AXIS_COUNT; a++) {
+        uint32_t idx = s * HAR_AXIS_COUNT + a;
+        har_ai_input[idx] = (har_ai_input[idx] - mean[a]) / std[a];
+      }
+    }
+  }
+
   if (HAR_RunNetwork(har_ai_input,
                      sizeof(har_ai_input) / sizeof(har_ai_input[0]),
                      result.scores,
@@ -260,15 +274,18 @@ static uint32_t HAR_ArgMax(const float *values, size_t count)
 
 static void HAR_FormatResult(const HAR_Result *result, char *buffer, size_t buffer_size)
 {
-  /* Use %d.%03d instead of %.3f — nano.specs printf doesn't support %f */
-  int conf_int = (int)(result->confidence * 1000.0f);
-  (void)snprintf(buffer,
-                 buffer_size,
-                 "HAR,source=%s,label=%s,conf=%d.%03d\r\n",
-                 HAR_SourceName(result->source),
-                 result->label,
-                 conf_int / 1000,
-                 conf_int % 1000);
+  /* Print ALL 7 class scores as integer percentages — nano.specs no %f   */
+  int s0 = (int)(result->scores[0] * 100.0f);
+  int s1 = (int)(result->scores[1] * 100.0f);
+  int s2 = (int)(result->scores[2] * 100.0f);
+  int s3 = (int)(result->scores[3] * 100.0f);
+  int s4 = (int)(result->scores[4] * 100.0f);
+  int s5 = (int)(result->scores[5] * 100.0f);
+  int s6 = (int)(result->scores[6] * 100.0f);
+  (void)snprintf(buffer, buffer_size,
+      "HAR,label=%s,W=%d%%,R=%d%%,Si=%d%%,St=%d%%,U=%d%%,D=%d%%,Unk=%d%%\r\n",
+      result->label,
+      s0, s1, s2, s3, s4, s5, s6);
 }
 
 static void HAR_FormatParseError(HAR_InputSource source, const char *line)
