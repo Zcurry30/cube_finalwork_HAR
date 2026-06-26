@@ -1,4 +1,4 @@
-# HAR on STM32F767 — Human Activity Recognition with Cube AI
+﻿# HAR on STM32F767 — Human Activity Recognition with Cube AI
 
 基于 STM32F767IGT6 + X-CUBE-AI 的**人体活动识别（HAR）**嵌入式系统。通过串口接收 6 轴 IMU 数据（加速度 + 陀螺仪），运行 1D-CNN 模型实时推理，输出 6 类活动标签。
 
@@ -293,7 +293,13 @@ har_fresh/
 
 ## 演示视频
 
-[待上传](#)
+演示视频待上传。预留位置：
+
+- 仓库路径：`media/demo/`
+- 建议文件名：`media/demo/har_demo.mp4`
+- 如果视频文件过大，建议上传到 GitHub Release 或外部视频平台，并在这里替换为最终链接。
+
+当前占位文件：[media/demo/README.md](media/demo/README.md)
 
 ---
 
