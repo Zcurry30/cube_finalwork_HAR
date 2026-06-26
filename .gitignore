@@ -41,3 +41,7 @@ models/
 .idea/
 Thumbs.db
 Desktop.ini
+Debug/
+st_ai_ws/
+*.su
+*.cyclo

@@ -1,3 +1,0 @@
-../Src/app_x-cube-ai.c:34:6:MX_X_CUBE_AI_Init	2
-../Src/app_x-cube-ai.c:47:6:MX_X_CUBE_AI_Process	1
-../Src/app_x-cube-ai.c:58:5:HAR_RunNetwork	4
