@@ -36,8 +36,8 @@
 
 ## 实验报告
 
-- [PDF 版](<Report/基于STM32H747I-DISCO的嵌入式人体活动识别系统(3).pdf>)
-- [DOCX 版](<Report/基于STM32H747I-DISCO的嵌入式人体活动识别系统(5).docx>)
+- [PDF 版](<Report/基于STM32H747I-DISCO的嵌入式人体活动识别系统.pdf>)
+- [DOCX 版](<Report/基于STM32H747I-DISCO的嵌入式人体活动识别系统.docx>)
 
 ---
 
