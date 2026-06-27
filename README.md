@@ -195,7 +195,7 @@ cp .ai/network_output/network_3*.h Inc/
 # STANDING (站立) → 预期: standing 99%
 0.996258,-0.259543,0.153025,-0.009863,-0.032731,0.054717
 
-# WALKING_UP (上楼) → 预期: walking_up 99%
+# WALKING_UP (上楼) → 预期: walking_up 92%
 1.085438,-0.727962,-0.413233,-0.152783,0.727753,0.293054
 ```
 
