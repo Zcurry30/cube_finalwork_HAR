@@ -293,13 +293,9 @@ har_fresh/
 
 ## 演示视频
 
-演示视频待上传。预留位置：
+[点击查看或下载演示视频](docs/demo.mp4)（48MB）
 
-- 仓库路径：`media/demo/`
-- 建议文件名：`media/demo/har_demo.mp4`
-- 如果视频文件过大，建议上传到 GitHub Release 或外部视频平台，并在这里替换为最终链接。
-
-当前占位文件：[media/demo/README.md](media/demo/README.md)
+演示内容：硬件连接 → 系统启动 → laying 躺下识别 → standing 站立识别 → walking_up 上楼识别
 
 ---
 
